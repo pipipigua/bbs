@@ -1,0 +1,107 @@
+
+    <div class="layui-container fly-marginTop fly-user-main">
+      <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+        <li class="layui-nav-item">
+          <a href="{:url('index/user/index',['uid'=>session('uid')])}">
+            <i class="layui-icon">&#xe609;</i>我的主页</a></li>
+        <li class="layui-nav-item layui-this">
+          <a href="{:url('index/set/user')}">
+            <i class="layui-icon">&#xe612;</i>用户中心</a></li>
+        <li class="layui-nav-item ">
+          <a href="{:url('index/set/index')}">
+            <i class="layui-icon">&#xe620;</i>基本设置</a></li>
+        <li class="layui-nav-item ">
+          <a href="__ROOT__/index/set/xiaoxi">
+            <i class="layui-icon">&#xe611;</i>我的消息</a></li>
+<!--         <li class="layui-nav-item ">
+          <a href="/auth/get/">
+            <i class="layui-icon">&#xe61e;</i>产品授权</a></li> -->
+      </ul>
+      <div class="site-tree-mobile layui-hide">
+        <i class="layui-icon">&#xe602;</i></div>
+      <div class="site-mobile-shade"></div>
+      <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief" lay-filter="user" id="LAY_uc">
+          <div class="fly-msg">您的邮箱尚未验证，这比较影响您的帐号安全，
+            <a href="/user/activate/">立即去激活？</a></div>
+          <ul class="layui-tab-title" id="LAY_mine">
+            <li data-type="mine-jie" lay-id="index" class="layui-this">我发的帖</li>
+            <li data-type="collection" data-url="/collection/find/" lay-id="collection">我收藏的帖</li></ul>
+          <div class="layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+            <div class="layui-tab-item layui-show">
+              <ul class="mine-view jie-row">
+              <?php foreach ($ques as $v) { ?>
+                <li>
+                  <a class="jie-title" href="{:url('index/jie/index',['qid'=>$v['qid']])}" target="_blank">{$v.title}</a>
+                  <i>{:Ftime($v.ctime)}</i>
+                  <div style="float:right;margin-right:20px;font-size: 14px;" class="layui-btn layui-btn-xs layui-btn-danger del" qid="{$v.qid}">删 除</div>
+                 
+                </li>
+
+
+              <?php } ?>
+
+              </ul>
+              <div id="LAY_page"></div>
+            </div>
+            <div class="layui-tab-item">
+              <ul class="mine-view jie-row">
+              <?php foreach ($collect as $v) { ?>
+                <li>
+                  <a class="jie-title" href="{:url('index/jie/index',['qid'=>$v['qid']])}" target="_blank">{$v.title}</a>
+                  <i>{:Ftime($v.ctime)}</i>
+                  <div style="float:right" class="layui-btn layui-btn-xs layui-btn-danger del_col" qid="{$v.qid}">删除</div>
+                </li>
+
+              <?php } ?>
+              </ul>
+              <div id="LAY_page1"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+    <script type="text/javascript">
+     layui.use(['form','jquery','layer','layedit'],function  () {
+          var form = layui.form;
+          var $ = layui.jquery;
+          var layer = layui.layer;
+          var layedit = layui.layedit;
+      
+      $('.del').click(function(event) {
+        qid=$(this).attr('qid');
+        that=$(this);
+         layer.confirm('确认要删除吗？',function(index){
+        $.ajax({
+          url: '{:url('/index/user/del')}',
+          type: 'POST',
+          dataType: 'json',
+          data: {qid:qid}
+        })
+        .done(function(res) {
+            if(res.error==1){
+              layer.msg(res.info, function(){
+    
+              });
+          }else{
+            
+            
+              layer.msg(res.info,{icon:1,time:1000});
+             location.reload();
+          }
+        })
+        .fail(function() {
+          console.log("error");
+        })
+        
+      });
+       })
+       return false; 
+   })  
+
+    </script>
+
+</html>

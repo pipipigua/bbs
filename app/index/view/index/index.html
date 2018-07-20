@@ -1,0 +1,315 @@
+0 {include file="layout2" /}
+    <div class="layui-container">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+          <div class="fly-panel">
+        <?php if ($top) { ?>
+        
+        <div class="fly-panel-title fly-filter">
+          <a>置顶</a>
+          <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right" id="LAY_goSignin" style="color: #FF5722;">去签到</a>
+        </div>
+        <?php } ?>
+          <ul class="fly-list"> 
+          {foreach $top as $row}
+          <li>
+            <a href="{:url('index/user/index',['uid'=>$row['uid']])}" class="fly-avatar">
+              <img src="__ROOT__/{$row.face}" alt=""></a>
+            <h2>
+              <a class="layui-badge">{$row.cname}</a>
+              <a href="{:url('index/jie/index',['qid'=>$row['qid']])}">{$row.title}</a></h2>
+            <div class="fly-list-info">
+              <a href="/u/7964544" link="">
+                <cite>{$row.nickname}</cite></a>
+              <span>{:Ftime($row['ctime'])}</span>
+              <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻">
+                <i class="iconfont icon-kiss"></i>{$row.kiss}</span>
+                
+              <?php if($row['status']==1) { ?>
+              <span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
+              <?php } ?>
+              <span class="fly-list-nums">
+                <i class="iconfont icon-pinglun1" title="回答"></i>{$row.answer_num}</span>
+            </div>
+            <div class="fly-list-badge"></div>
+          </li>
+          {/foreach}
+              
+          </ul>
+          </div>
+          <div class="fly-panel" style="margin-bottom: 0;">
+            <div class="fly-panel-title fly-filter">
+              <a href="{:url('index/index/index')}" class="layui-this">综合</a>
+              <span class="fly-mid"></span>
+              <a href="{:url('index/index/index',['cid'=>input('cid'),'status'=>0])}">未结</a>
+              <span class="fly-mid"></span>
+              <a href="{:url('index/index/index',['cid'=>input('cid'),'status'=>1])}">已结</a>
+              <span class="fly-mid"></span>
+              <a href="{:url('index/index/index',['cid'=>input('cid'),'is_jing'=>1])}">精华</a></div>
+            
+            <ul class="fly-list">
+
+            <?php  foreach ($ques as $v) { ?>
+                <li>
+                <a href="{:url('index/user/index',['uid'=>$v['uid']])}" class="fly-avatar">
+                  <img src="__ROOT__/{$v.face}" alt="{$v.nickname}"></a>
+                <h2>
+                  <a class="layui-badge">{$v.cname}</a>
+                  <a href="{:url('index/jie/index',['qid'=>$v['qid']])}">{$v.title}</a></h2>
+                <div class="fly-list-info">
+                  <a href="{$v.nickname}" link>
+                    <cite>{$v.nickname}</cite></a>
+                  <span>{:Ftime($v['ctime'])}</span>
+                  <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻">
+                    <i class="iconfont icon-kiss"></i>{$v.kiss}</span>
+                  <span class="fly-list-nums">
+                    <i class="iconfont icon-pinglun1" title="回答"></i>{$v.answer_num}</span>
+                </div>
+                <div class="fly-list-badge"></div>
+              </li>
+            <?php } ?>
+            <?php if (!$ques->total()) { ?>
+              <ul class="jieda" id="jieda">
+              <li class="fly-none">消灭零回复</li></ul>
+            <?php } ?>
+            </ul>
+
+            
+        <style type="text/css">
+            .pagination{
+
+              height: 50px;
+            }
+            .pagination li{
+              display: inline-block;
+              padding: 5px 10px;
+              border: 1px solid #009E94;
+              margin-left: 5px;
+              font-size: 16px;
+            }
+            .pagination li.active{
+                background: #009E94;
+                color: #fff;
+            }
+
+        </style>
+            <div style="text-align: center">
+            {$ques->render()}
+
+              <div class="laypage-main">
+                <a href="" class="laypage-next">更多求解</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="layui-col-md4">
+        <?php if (!input()) { ?>
+
+                    <div class="fly-panel">
+            <h3 class="fly-panel-title">温馨通道</h3>
+            <ul class="fly-panel-main fly-list-static">
+              <li>
+                <a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a></li>
+              
+            </ul>
+          </div>
+          <div class="fly-panel fly-signin">
+            <div class="fly-panel-title">签到
+              <i class="fly-mid"></i>
+              <a href="javascript:;" class="fly-link" id="LAY_signinHelp">说明</a>
+              <i class="fly-mid"></i>
+              <a href="javascript:;" class="fly-link" id="LAY_signinTop">活跃榜
+                <span class="layui-badge-dot"></span></a>
+              <span class="fly-signin-days">已连续签到{$day}天</span>
+            </div>
+            <div class="fly-panel-main fly-signin-main">
+            <?php if ($signin) { ?>
+                <button class="layui-btn layui-btn-danger layui-btn-disabled" id="layui-btn-disabledignin" >今日已签到</button><span>获得了<cite>{$kiss}</cite>飞吻</span>
+            <?php }else{ ?>
+                <button class="layui-btn  layui-btn-danger" id="signin" >今日签到</button>
+
+              <?php } ?>
+                
+              </div>
+          </div>
+          <div class="fly-panel">
+            <div class="fly-panel-title">钻级赞助商
+              <span class="fly-mid"></span>
+              <a href="" class="fly-link fly-joinad    ">我要加入</a></div>
+            <div class="fly-panel-main" style="padding: 13px 15px;">
+              <a href="" target="_blank" rel="nofollow" class="fly-zanzhu" style="background-color: #393D49;">虚席以待</a></div>
+          </div>
+          <div class="fly-panel fly-rank fly-rank-reply" id="LAY_replyRank">
+            <h3 class="fly-panel-title">
+            回贴周榜
+            </h3>
+              <dl>
+              <?php foreach ($ret as $v) { ?>
+                <dd>
+                  <a href="{:url('index/user/index',['uid'=>$v['uid']])}">
+                    <img src="__ROOT__/{$v.face}">
+                    <cite></cite>
+                    <i>{$v.ret}次回答</i>
+                  </a>
+                </dd> 
+              <?php } ?>
+
+                </dl>
+          </div>
+        <?php } ?>
+
+          
+          <dl class="fly-panel fly-list-one">
+            <dt class="fly-panel-title">本周热议
+            </dt>
+            <?php foreach ($hot as $v) { ?>
+              <dd>
+                <a href="">{$v.title}</a>
+                <span>
+                <i class="iconfont icon-pinglun1"></i>{$v.answer_num}</span>
+            </dd>
+            <?php } ?>
+
+            </dl>
+          <div class="fly-panel">
+            <div class="fly-panel-title">官方产品</div>
+            <div class="fly-panel-main">
+              <a href="http://layim.layui.com/?from=fly" target="_blank" class="fly-zanzhu" time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">LayIM 3.0 - layui 旗舰之作</a></div>
+          </div>
+<!--           <div class="fly-panel" style="padding: 20px 0; text-align: center;">
+            <img src="//cdn.layui.com/upload/2017_8/168_1501894831075_19619.jpg" style="max-width: 100%;" alt="layui">
+            <p style="position: relative; color: #666;">微信扫码关注 layui 公众号</p></div> -->
+          <div class="fly-panel fly-link">
+            <h3 class="fly-panel-title">友情链接</h3>
+            <dl class="fly-panel-main">
+              <dd>
+                <a href="http://layim.layui.com/" target="_blank">WebIM</a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+  <div id='new' style="display:none">
+    <ul class="layui-tab-item layui-show">
+    <?php foreach ($new as $v) { ?>
+      <li >
+      <a href="{:url('index/jie/index',['uid'=>$v['uid']])}" target="_blank">
+        <img style="width:37px;height:37px;" src="__ROOT__/{$v.face}">
+        <cite class="fly-link">{$v.nickname}</cite></a>
+      <span class="fly-grey">签到于 {$v.time}</span>
+      </li>
+    <?php } ?>
+  </ul>
+  </div>
+    <div id='asc' style="display:none">
+    <ul class="layui-tab-item layui-show">
+    <?php foreach ($asc as $v) { ?>
+      <li >
+      <a href="{:url('index/jie/index',['uid'=>$v['uid']])}" target="_blank">
+        <img style="width:37px;height:37px;" src="__ROOT__/{$v.face}">
+        <cite class="fly-link">{$v.nickname}</cite></a>
+      <span class="fly-grey">签到于 {$v.time}</span>
+      </li>
+    <?php } ?>
+
+  </ul>
+  </div>
+  <div id='con' style="display:none">
+    <ul class="layui-tab-item layui-show">
+    <?php foreach ($con as $v) { ?>
+      <li >
+      <a href="{:url('index/jie/index',['uid'=>$v['uid']])}" target="_blank">
+        <img style="width:37px;height:37px;" src="__ROOT__/{$v.face}">
+        <cite class="fly-link">{$v.nickname}</cite></a>
+      <span class="fly-grey">连续签到 {$v.day} 天</span>
+      </li>
+    <?php } ?>
+
+  </ul>
+  </div>
+
+
+
+</html>
+    <script type="text/javascript">
+
+        layui.use(['form','jquery','layer','layedit'],function  () {
+          var form = layui.form;
+          var $ = layui.jquery;
+          var layer = layui.layer;
+          var layedit = layui.layedit;
+
+
+
+          $('#signin').click(function(event) {
+            that=$(this);
+            $.ajax({
+              url: '{:url('index/index/signin')}',
+              type: 'GET',
+              dataType: 'json'
+            })
+            .done(function(res) {
+
+              if(res.error==1){
+                  layer.msg(res.info, function(){
+                  //关闭后的操作
+                  });
+              }else{
+                  that.removeClass('layui-btn-danger');
+                  that.addClass('layui-btn-disabled')
+                  that.text('今日已签到');
+                  layer.alert(res.info, {icon: 6})
+              }                
+            })
+            .fail(function() {
+              console.log("error");
+            })
+          });
+          $('#LAY_signinHelp').click(function(event) {
+              layer.open({
+                type: 1,
+                skin: 'layui-layer-rim', //加上边框
+                area: ['300px', '400px'], //宽高
+                content: '<div class="layui-text"style="padding: 20px;"><blockquote class="layui-elem-quote">“签到”可获得社区飞吻，规则如下</blockquote><table class="layui-table"><thead><tr><th>连续签到天数</th><th>每天可获飞吻</th></tr></thead><tbody><tr><td>＜5</td><td>5</td></tr><tr><td>≥5</td><td>10</td></tr><tr><td>≥15</td><td>20</td></tr><tr></tbody></table><ul><li>中间若有间隔，则连续天数重新计算</li><li style="color: #FF5722;">不可利用程序自动签到，否则飞吻清零</li></ul></div></div><span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:;"></a></span><span class="layui-layer-resize"></span></div>'
+               });
+          });
+          $('#LAY_signinTop').click(function(event) {
+            asc= $('#asc').html();
+            res= $('#new').html();
+            con= $('#con').html();
+            layer.tab({
+              area: ['450px', '429px'],
+              tab: [{
+                title: '最新签到', 
+                content: res
+              }, {
+                title: '今日最快', 
+                content: asc
+              }, {
+                title: '总签到榜', 
+                content: con
+              }]
+            });
+          })  
+       $('.fly-search').click(function(event) {
+              layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                shadeClose: true,
+                area: ['550px'],
+                skin: 'fly-layer-search',
+                content: '<form  action="{:url('index/search/index')}" ><input autocomplete="off" placeholder="搜索内容，回车跳转" type="text" name="q"></form>'
+              });
+          });
+   })    
+      function checkSubmit (ev) {
+                  data = $(ev).find('input').val();
+                  url = "{:url('index/search/index')}";
+                  url = url.replace(".html",'')+'/q/'+data+".html";
+                  location.replace(url);
+                  return false;
+              }
+
+</script>

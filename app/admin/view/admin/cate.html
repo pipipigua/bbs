@@ -1,0 +1,204 @@
+  <body>
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">演示</a>
+        <a>
+          <cite>导航元素</cite></a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+    <div class="x-body">
+      <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so layui-form-pane">
+          <input class="layui-input" placeholder="分类名" name="name">
+          <button class="layui-btn add_cate"  lay-submit="" lay-filter="sreach"><i class="layui-icon"></i>增加</button>
+        </form>
+      </div>
+      <xblock>
+        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        <span class="x-right" style="line-height:40px">共有数据：{$res} 条</span>
+      </xblock>
+      <table class="layui-table">
+        <thead>
+          <tr>
+            <th>
+              <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+            </th>
+            <th>ID</th>
+            <th>分类名</th>
+            <th>操作</th>
+        </thead>
+        <tbody>
+        <?php foreach ($cate as $r) { ?>
+          <tr>
+            <td>
+              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{$r.cid}'><i class="layui-icon">&#xe605;</i></div>
+            </td>
+            <td>{$r.cid}</td>
+            <td>{$r.name}</td>
+            <td class="td-manage">
+              <a title="编辑"  onclick="x_admin_show('编辑','admin-edit.html')" href="javascript:;">
+                <i class="layui-icon">&#xe642;</i>
+              </a>
+              <a title="删除" class="delete" cid="{$r.cid}" href="javascript:;">
+                <i class="layui-icon">&#xe640;</i>
+              </a>
+            </td>
+          </tr>
+        <?php } ?>
+
+        </tbody>
+      </table>
+      <div class="page">
+        <div>
+            {$cate->render()}
+        </div>
+      </div>
+
+    </div>
+    <script>
+      layui.use(['laydate','form'], function(){
+        var laydate = layui.laydate;
+        var form = layui.form;
+        
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#end' //指定元素
+        });
+
+         /*用户-停用*/
+          form.on('submit(sreach)', function(data){
+            $.ajax({
+              url: '{:url('admin/admin/add_cate')}',
+              type: 'POST',
+              dataType: 'json',
+              data: data.field,
+            })
+            .done(function(res) {
+              
+              if(res.error==1){
+                  layer.msg(res.info, function(){
+                  //关闭后的操作
+                  });
+              }else{
+                layer.alert(res.info, {icon: 6},function(){
+                  location.href="{:url('admin/admin/cate')}"
+                });
+              }
+            })
+            .fail(function() {
+              console.log("error");
+            })
+            return false;
+            
+            
+          });
+
+
+
+
+      });
+
+      
+
+      function member_stop(obj,id){
+          layer.confirm('确认要停用吗？',function(index){
+
+              if($(obj).attr('title')=='启用'){
+
+                //发异步把用户状态进行更改
+                $(obj).attr('title','停用')
+                $(obj).find('i').html('&#xe62f;');
+
+                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                layer.msg('已停用!',{icon: 5,time:1000});
+
+              }else{
+                $(obj).attr('title','启用')
+                $(obj).find('i').html('&#xe601;');
+
+                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                layer.msg('已启用!',{icon: 5,time:1000});
+              }
+              
+          });
+      }
+
+      /*用户-删除*/
+        $('.delete').click(function(event) {
+          cid=$(this).attr('cid');
+          that=$(this);
+          layer.confirm('确认要删除吗？',function(index){
+          $.ajax({
+              url: '{:url('/admin/admin/delcate')}',
+              type: 'POST',
+              dataType: 'json',
+              data: {cid:cid}
+            })
+            .done(function(res) {
+                if(res.error==1){
+                  layer.msg(res.info, function(){
+        
+                  });
+              }else{
+                   that.parents("tr").remove();
+                  layer.msg(res.info,{icon:1,time:1000});
+                 location.href="{:url('admin/admin/cate')}";
+
+              }
+            })
+            .fail(function() {
+              console.log("error");
+            }) 
+          })
+          return false;
+      })
+ 
+
+
+   function delAll (argument) {
+        var data = tableCheck.getData();
+
+        layer.confirm('确认要删除吗？'+data,function(index){
+        $.ajax({
+          url: '{:url('/admin/admin/delallcate')}',
+          type: 'POST',
+          dataType: 'json',
+          data: {'cid':data}
+        })
+        
+        .done(function(res) {
+            if(res.error==1){
+              layer.msg(res.info, function(){
+
+              });
+          }else{
+            
+            layer.msg('删除成功', {icon: 1});
+            $(".layui-form-checked").not('.header').parents('tr').remove();
+             location.href="{:url('admin/admin/cate')}";
+          }
+        })
+        .fail(function() {
+          console.log("error");
+        })
+        }) 
+        return false;
+      }
+    </script>
+    <script>var _hmt = _hmt || []; (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();</script>
+  </body>
+
+</html>

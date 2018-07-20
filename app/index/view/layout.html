@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>
+    {$title} - {:config('site_name')}
+    </title>
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_24081_lyaxcfn8fp1iqkt9.css">
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+    <link rel="stylesheet" href="__STATIC__/index/global.css"
+    charset="utf-8">
+     <script src="__STATIC__/layui/layui.js">
+    </script>
+  </head>
+  
+  <body>
+    <div class="fly-header layui-bg-black">
+      <div class="layui-container">
+        <a class="fly-logo" href="__ROOT__">
+          <img src="__STATIC__/img/logo.png" alt="layui">
+        </a>
+        <ul class="layui-nav fly-nav layui-hide-xs">
+          <li class="layui-nav-item">
+            <a href="">
+              <i class="iconfont icon-jiaoliu">
+              </i>
+              交流
+            </a>
+          </li>
+          <li class="layui-nav-item">
+            <a href="">
+              <i class="iconfont icon-iconmingxinganli">
+              </i>
+              案例
+            </a>
+          </li>
+          <li class="layui-nav-item">
+            <a href="http://www.layui.com/">
+              <i class="iconfont icon-ui">
+              </i>
+              框架
+            </a>
+          </li>
+        </ul>
+        <?php  if(!session('uid')) {  ?>
+        <ul class="layui-nav fly-nav-user">
+          <li class="layui-nav-item">
+            <a class="iconfont icon-touxiang layui-hide-xs" href="{:url('index/login/index')}">
+            </a>
+          </li>
+          <li class="layui-nav-item">
+            <a href="{:url('index/login/index')}">
+                登入
+              </a>
+          </li>
+          <li class="layui-nav-item">
+            <a href="{:url('index/reg/index')}">注册</a>
+          </li>
+          <li class="layui-nav-item layui-hide-xs">
+            <a href="{:url('index/login/qqlogin')}" 
+            title="QQ登入" class="iconfont icon-qq">
+            </a>
+          </li>
+          <li class="layui-nav-item layui-hide-xs">
+            <a href="/app/weibo/" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})"
+            title="微博登入" class="iconfont icon-weibo">
+            </a>
+          </li>
+          <li class="layui-nav-item">
+            <a href="{:url('admin/login/index')}">
+                后台登入
+              </a>
+          </li>
+
+        </ul>
+        <?php }else { ?>
+        <ul class="layui-nav fly-nav-user">
+          <li class="layui-nav-item">
+            <a class="fly-nav-avatar" href="javascript:;">
+              <cite class="layui-hide-xs">
+                <?php echo session('nickname'); ?>
+              </cite>
+              <img src="__ROOT__/<?php echo session('face'); ?>">
+              <span class="layui-nav-more"></span>
+            </a>
+            <dl class="layui-nav-child layui-anim layui-anim-upbit">
+              <dd>
+                <a href="{:url('index/set/index')}">
+                  <i class="layui-icon"></i>基本设置</a></dd>
+              <dd>
+                <a href="__ROOT__/index/set/xiaoxi">
+                  <i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a>
+              </dd>
+              <dd>
+                <a href="{:url('index/user/index',['uid'=>session('uid')])}">
+                  <i class="layui-icon" style="margin-left: 2px; font-size: 22px;"></i>我的主页</a></dd>
+              <hr style="margin: 5px 0;">
+              <dd>
+                <a href="{:url('index/login/loginout')}" style="text-align: center;">退出</a></dd>
+            </dl>
+          </li>
+
+        </ul>
+         <?php  } ?>
+      </div>
+    </div>
+    {__CONTENT__}
+    <div class="fly-footer">
+      <p>
+        <a href="http://fly.layui.com/">
+          Fly社区
+        </a>
+        2017 &copy;
+        <a href="http://www.layui.com/">
+          layui.com
+        </a>
+      </p>
+      <p>
+        <a href="http://fly.layui.com/jie/3147/" target="_blank">
+          付费计划
+        </a>
+        <a href="http://fly.layui.com/jie/8157/" target="_blank">
+          获取Fly社区模版
+        </a>
+        <a href="http://fly.layui.com/jie/2461/" target="_blank">
+          微信公众号
+        </a>
+      </p>
+      <p class="fly-union">
+        <a href="https://www.upyun.com?from=layui" target="_blank" rel="nofollow"
+        upyun>
+          <img src="__STATIC__/img/upyun.png">
+        </a>
+        <span>
+          提供 CDN 赞助
+        </span>
+      </p>
+    </div>
+   
+<script>
+  //注意：导航 依赖 element 模块，否则无法进行功能性操作
+  layui.use('element', function(){
+    var element = layui.element;
+    
+    //…
+});
+</script>
+
+
+  </body>
+
+
+</html>

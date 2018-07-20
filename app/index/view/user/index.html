@@ -1,0 +1,53 @@
+
+    <div class="fly-home fly-panel" style="background-image: url();">
+      <img src="__ROOT__/{$user.face}" alt="{$user.nickname}">
+      <h1> {$user.nickname}
+        <i class="iconfont           icon-nan        "></i></h1>
+      
+      <p class="fly-home-info">
+        <i class="iconfont icon-kiss" title="飞吻"></i>
+        <span style="color: #FF7200;">{$user.kiss}飞吻</span>
+        <i class="iconfont icon-shijian"></i>
+        <span>{:Ftime($user.ctime)} 加入</span>
+        <i class="iconfont icon-chengshi"></i>
+        <span>来自{$user.city}</span></p>
+      <p class="fly-home-sign">{$user.sign}</p></div>
+    <div class="layui-container">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6 fly-home-jie">
+          <div class="fly-panel">
+            <h3 class="fly-panel-title"> {$user.nickname}最近的提问</h3>
+            <ul class="jie-row">
+            <?php foreach ($ques as $v) { ?>
+              <li>
+                <a href="{:url('index/jie/index',['qid'=>$v['qid']])}" class="jie-title">{$v.title}</a>
+                <i>{:Ftime($v['ctime'])}</i>
+                <em class="layui-hide-xs">{$v.view_num}阅/{$v.answer_num}答</em>
+              </li>
+            <?php } ?>
+
+            </ul>
+          </div>
+        </div>
+        <div class="layui-col-md6 fly-home-da">
+          <div class="fly-panel">
+            <h3 class="fly-panel-title">{$user.nickname}最近的回答</h3>
+            <ul class="home-jieda">
+            <?php foreach ($answer as $r) { ?>
+              <li>
+                <p>
+                  <span>{:Ftime($r['ctime'])}</span>在
+                  <a href="{:url('index/jie/index',['qid'=>$r['qid']])}" target="_blank">{$r.title}{$r.name}</a>{$r.title}中回答:</p>
+                <div class="home-dacontent">{$r.content}</div>
+              </li>              
+            <?php } ?>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+</html>

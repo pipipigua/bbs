@@ -1,0 +1,64 @@
+{include file="layout2" /}
+    <div class="layui-container">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+
+          <div class="fly-panel" style="margin-bottom: 0;">
+
+          <div class="fly-panel-title fly-filter">关键词：<span style="color:red;font-size:20px; ">{$p}</span></div>
+            
+            
+            <ul class="fly-list">
+
+            <?php  foreach ($Arr as $v) { ?>
+                <li>
+                <a href="{:url('index/user/index',['uid'=>$v['uid']])}" class="fly-avatar">
+                  <img src="__ROOT__/{$v.face}" alt="{$v.nickname}"></a>
+                <h2>
+                  <a class="layui-badge">{$v.cname}</a>
+                  <a href="{:url('index/jie/index',['qid'=>$v['qid']])}">{$v.title}</a></h2>
+                <div class="fly-list-info">
+                  <a href="{$v.nickname}" link>
+                    <cite>{$v.nickname}</cite></a>
+                  <span>{:Ftime($v['ctime'])}</span>
+                  <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻">
+                    <i class="iconfont icon-kiss"></i>{$v.kiss}</span>
+                  <span class="fly-list-nums">
+                    <i class="iconfont icon-pinglun1" title="回答"></i>{$v.answer_num}</span>
+                </div>
+                <div class="fly-list-badge"></div>
+              </li>
+            <?php } ?>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+ 
+
+
+
+</html>
+    <script type="text/javascript">
+          layui.use(['form','jquery','layer','layedit'],function  () {
+              var form = layui.form;
+              var $ = layui.jquery;
+              var layer = layui.layer;
+              var layedit = layui.layedit;
+
+
+          $('.fly-search').click(function(event) {
+              layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                shadeClose: true,
+                area: ['550px'],
+                skin: 'fly-layer-search',
+                content: '<form  action="{:url('index/search/index')}" ><input autocomplete="off" placeholder="搜索内容，回车跳转" type="text" name="q"></form>'
+              });
+          });
+     })
+   </script>
